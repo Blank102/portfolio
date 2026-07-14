@@ -678,6 +678,16 @@ font-size: 13px; }
   gap: 6px;
 }
 
+/* Hidden from real users, catches basic bots — never remove this */
+.honeypot-field {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
 .field label {
   font-family: var(--font-mono);
   font-size: 11px;

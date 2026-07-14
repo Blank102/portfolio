@@ -117,13 +117,41 @@ const observer = new IntersectionObserver((entries) => {
 
 sections.forEach(section => observer.observe(section));
 
-// Contact form — placeholder submit handler.
-// This will be swapped out once the FastAPI backend is wired up.
+// Contact form — sends to the FastAPI backend
 const form = document.getElementById('contactForm');
 const status = document.getElementById('formStatus');
 
-form.addEventListener('submit', (e) => {
+const BACKEND_URL = 'https://YOUR-RENDER-URL.onrender.com/contact';
+
+form.addEventListener('submit', async (e) => {
   e.preventDefault();
-  status.textContent = 'backend not connected yet — this is a frontend placeholder';
-  form.reset();
+
+  const submitBtn = form.querySelector('.submit-btn');
+  submitBtn.disabled = true;
+  status.textContent = 'sending...';
+  status.style.color = 'var(--text-muted)';
+
+  try {
+    const res = await fetch(BACKEND_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: form.name.value,
+        email: form.email.value,
+        message: form.message.value,
+        honeypot: form.honeypot.value
+      })
+    });
+
+    if (!res.ok) throw new Error('Request failed');
+
+    status.textContent = "message sent — thanks for reaching out! I'll get back to you soon.";
+    status.style.color = 'var(--status-live)';
+    form.reset();
+  } catch (err) {
+    status.textContent = 'something went wrong — please try emailing me directly instead.';
+    status.style.color = 'var(--accent)';
+  } finally {
+    submitBtn.disabled = false;
+  }
 });
