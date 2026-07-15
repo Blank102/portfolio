@@ -121,7 +121,7 @@ sections.forEach(section => observer.observe(section));
 const form = document.getElementById('contactForm');
 const status = document.getElementById('formStatus');
 
-const BACKEND_URL = 'https://portfolio-backend-gentle-snowfall-3145.fly.dev/';
+const BACKEND_URL = 'https://portfolio-backend-gentle-snowfall-3145.fly.dev/contact';
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
