@@ -121,7 +121,8 @@ sections.forEach(section => observer.observe(section));
 const form = document.getElementById('contactForm');
 const status = document.getElementById('formStatus');
 
-const BACKEND_URL = 'https://portfolio-backend-gentle-snowfall-3145.fly.dev/contact';
+const WEB3FORMS_URL = 'https://api.web3forms.com/submit';
+const WEB3FORMS_KEY = 'd19e2067-6213-4745-b277-1cc0a070d580';
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -132,18 +133,21 @@ form.addEventListener('submit', async (e) => {
   status.style.color = 'var(--text-muted)';
 
   try {
-    const res = await fetch(BACKEND_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: form.name.value,
-        email: form.email.value,
-        message: form.message.value,
-        honeypot: form.honeypot.value
-      })
-    });
+    const res = await fetch(WEB3FORMS_URL, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+  body: JSON.stringify({
+    access_key: WEB3FORMS_KEY,
+    subject: 'New message from portfolio',
+    name: form.name.value,
+    email: form.email.value,
+    message: form.message.value,
+    botcheck: form.botcheck.checked
+  })
+});
 
-    if (!res.ok) throw new Error('Request failed');
+const data = await res.json();
+if (!data.success) throw new Error(data.message || 'Request failed');
 
     status.textContent = "message sent — thanks for reaching out! I'll get back to you soon.";
     status.style.color = 'var(--status-live)';
