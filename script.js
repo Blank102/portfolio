@@ -25,12 +25,10 @@ function typeRoleTag(roleTag) {
   })();
 }
 
-// Start typing after the intro-item fade-in delay for this element (~0.2s)
 setTimeout(() => {
   roleTags.forEach(typeRoleTag);
 }, 250);
 
-// Scroll-reveal for each section panel
 const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -42,7 +40,6 @@ const revealObserver = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.panel').forEach(panel => revealObserver.observe(panel));
 
-// Magnetic tilt effect on project cards
 if (!prefersReducedMotion && window.matchMedia('(hover: hover)').matches) {
   document.querySelectorAll('.project-card').forEach(card => {
     card.addEventListener('mousemove', (e) => {
